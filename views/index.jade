@@ -1,0 +1,182 @@
+extends layout
+
+block content
+  header#header
+    p.spectrum WELCOME TO
+    p.spectrum.title GAY CHECK ONLINE
+    p.spectrum#msg PLEASE ACTIVATE YOUR WEBCAM!
+  
+  footer
+    p.spectrum A #[a.spectrum(href='https://www.netro.cc/', target='_blank') NETRO] CAMPAIGN
+    
+  canvas#output
+  video#webcam(autoplay='autoplay', loop='loop')
+
+  script(src='/javascripts/gumwrapper.min.js')
+  script(src='/javascripts/ccv.js')
+  script(src='/javascripts/face.js')
+  script(src='/javascripts/utils.js')
+  script(src='/javascripts/howler.min.js')
+
+  script.
+    var face = 0;
+    var t = 0;
+    var status = 0;
+    var tInt = 100;
+    var hue = 0;
+    var rgb;
+    
+    var intro = new Howl({
+      urls: ['/sounds/gaycheck_intro.mp3', '/sounds/gaycheck_intro.ogg'],
+      loop: true
+    });
+    var wait = new Howl({
+      urls: ['/sounds/gaycheck_wait.mp3', '/sounds/gaycheck_wait.ogg'],
+      loop: true
+    });
+    var scan = new Howl({
+      urls: ['/sounds/gaycheck_scan.mp3', '/sounds/gaycheck_scan.ogg'],
+      volume: 0.6,
+      loop: true
+    });
+    var theme = new Howl({
+      urls: ['/sounds/gaycheck_theme.mp3', '/sounds/gaycheck_theme.ogg'],
+      loop: true
+    });
+
+    (function() {
+      var element = document.getElementById('header');
+      element.style.top = (window.innerHeight/2 - element.clientHeight/2) + 'px';
+      
+      intro.play();
+      
+      var analysis = setInterval(function() {
+        if (status > 0) {
+          t = face ? t + tInt : 0;
+      
+          var element = document.getElementById('header');
+          
+          if (status == 1) {
+            element.innerHTML = '<p class="spectrum title">SHOW YOUR FACE!</p>';
+            element.style.top = (window.innerHeight/2 - element.clientHeight/2) + 'px';
+            intro.stop();
+            scan.stop();
+            wait.play();
+            status = 2;
+          } else if (status == 2 && t > 0 && t < 5000) {
+            element.innerHTML = '<p class="spectrum">ANALYSING FACE!</p><p class="spectrum">PLEASE WAIT...</p>';
+            element.style.top = (window.innerHeight - element.clientHeight - 48) + 'px';
+            wait.stop();
+            scan.play();
+            status = 3;
+          } else if (status == 3 && t >= 5000) {
+            element.innerHTML = '<p class="spectrum">CONGRATULATIONS</p><p class="spectrum title">YOU ARE GAY!</p>';
+            element.style.top = (window.innerHeight - element.clientHeight - 48) + 'px';
+            scan.stop();
+            theme.play();
+            status = 4;
+            clearInterval(analysis);
+          } else if (status == 3 && t == 0) {
+            status = 1;
+          }
+          
+          element.style.color = 'rgb('+ rgb.r +','+ rgb.g +','+ rgb.b +')';
+        }
+      }, tInt);
+      
+      setInterval(function() {
+        hue = hue < 1 ? hue+0.01 : 0;
+        rgb = HSVtoRGB(hue, 1, 1);
+        //console.log("R: " + rgb.r + " G: " + rgb.g + " B: " + rgb.b);
+        var element = document.getElementsByClassName('spectrum');
+        for (var i=0; i<element.length; i++) {
+          var item = element[i];
+          item.style.color = 'rgb('+ rgb.r +','+ rgb.g +','+ rgb.b +')';
+        }
+      }, 40);
+      
+      window.onresize = function() {
+        console.log("STATUS " + status);
+        var element = document.getElementById('header');
+        if (status <= 2) element.style.top = (window.innerHeight/2 - element.clientHeight/2) + 'px';
+        else element.style.top = (window.innerHeight - element.clientHeight - 48) + 'px';
+      };
+    }());
+    
+    var App = {
+      
+      start: function(video) {
+        App.video = video;
+        App.canvas.style.display = 'inline';
+        App.canvas.width = App.video.videoWidth;
+        App.canvas.height = App.video.videoHeight;
+        App.backCanvas.width = App.video.videoWidth / 4;
+        App.backCanvas.height = App.video.videoHeight / 4;
+        App.backContext = App.backCanvas.getContext('2d');
+        
+        App.drawToCanvas();
+        
+        status = 1;
+      },
+      error: function(e) {
+        console.error(e.message);
+        if (e.message.localeCompare('Unable to get webcam stream.')) {
+          App.info.innerHTML = 'YOU NEED WEBCAM SUPPORT: PLEASE USE CHROME, FIREFOX OR OPERA';
+        } else {
+          App.info.innerHTML = 'CAMERA ACCESS DENIED! PLEASE RELOAD AND TRY AGAIN.';
+        }
+      },
+      drawToCanvas: function() {
+        requestAnimationFrame(App.drawToCanvas);
+        
+        var video = App.video,
+          ctx = App.context,
+          backCtx = App.backContext,
+          m = 4,
+          w = 4,
+          i,
+          comp;
+        
+        backCtx.drawImage(video, 0, 0, App.backCanvas.width, App.backCanvas.height);
+        ctx.drawImage(video, 0, 0, App.canvas.width, App.canvas.height);
+        
+        comp = ccv.detect_objects(App.ccv = App.ccv || {
+          canvas: App.backCanvas,
+          cascade: cascade,
+          interval: 4,
+          min_neighbors: 1
+        });
+        
+        App.comp = comp;
+        face = App.comp.length;
+        
+        for (i = App.comp.length; i--; ) {
+          var hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+          
+          ctx.beginPath();
+          ctx.rect(App.comp[i].x*m, App.comp[i].y*m-App.comp[i].height, App.comp[i].width*m, App.comp[i].height*6);
+          
+          ctx.lineWidth = 18;
+          ctx.strokeStyle = '#' + hex;
+          ctx.stroke();
+          
+          if (status == 3) {
+            ctx.fillStyle = '#' + hex;
+            ctx.fillRect(App.comp[i].x*m, App.comp[i].y*m-App.comp[i].height, App.comp[i].width*m, (App.comp[i].height*6)/5000*t);
+          }
+        }
+      }
+    };
+    
+    App.init = function() {
+      App.backCanvas = document.createElement('canvas');
+      App.canvas = document.querySelector('#output');
+      App.canvas.style.display = 'none';
+      App.context = App.canvas.getContext('2d');
+      App.info = document.querySelector('#msg');
+      
+      App.gum = new GumWrapper({video: 'webcam'}, App.start, App.error);
+      App.gum.play();
+    };
+    
+    App.init();

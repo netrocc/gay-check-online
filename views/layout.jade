@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title= title
+
+    meta(name='description', content='#{description}')
+    meta(name='keywords', content='#{keywords}')
+    meta(name='author', content='NETRO')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no')
+    
+    meta(property='og:title', content='#{title}')
+    meta(property='og:type', content='website')
+    meta(property='og:description', content='#{description}')
+    meta(property='og:image', content='https://www.netro.cc/images/#{ogimageurl}')
+    meta(property='og:url', content='https://www.gay-check-online.com')
+    meta(property='og:site_name', content='#{title}')
+    
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Ubuntu:400,700', type='text/css')
+    link(rel='stylesheet', href='/stylesheets/reset.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-47804307-2', 'gay-check-online.com');
+      ga('send', 'pageview');
+
+  body
+    block content

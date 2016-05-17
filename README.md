@@ -10,7 +10,7 @@ Gay Online Check wants to show that the discussion about gay or not gay is total
 
 Based on scientific studies about facial characteristics of gays, the Internet Agency NETRO has created an online tool to verify your sexual orientation in under 10 seconds. NETRO wrote an algorithm to compare your face with the original databases from the studies of the Charles University in Prague and the Academy of Sciences of the Czech Republic. In approximately 10 seconds a face is measured and analyzed and the sexual orientation can be determined. Gay Check Online is a rapid and simple method to provide the user with a sense of security and clarity.
 
-[NETRO] (2014)
+[NETRO] 2014
 
 ----
 
@@ -30,7 +30,7 @@ GAY CHECK ONLINE uses a number of open source projects to work properly:
 GAY CHECK ONLINE requires [Node.js] v4+ to run.
 
 ```sh
-$ git clone [git-repo-url]
+$ git clone https://github.com/netrocc/gay-check-online.git
 $ cd gay-check-online
 $ npm install
 $ node app.js
@@ -51,5 +51,3 @@ MIT License
 
 [Node.js]: <https://nodejs.org>
 [Express]: <http://expressjs.com>
-
-[git-repo-url]: <https://github.com/netrocc/gay-check-online.git>

@@ -6,6 +6,7 @@ router.get('/', function(req, res, next) {
     title: 'GAY CHECK ONLINE',
     description: 'You want to know if you or one of your friends are gay? No problem, this webcam face check takes only 10 seconds.',
     keywords: 'gay, check, test, netro',
+    requrl: req.protocol + '://' + req.hostname,
     ogimageurl: 'gay-check-online.jpg'
   });
 });

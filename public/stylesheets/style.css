@@ -49,3 +49,24 @@ video#webcam {
 	height:480px;
 	z-index:-2;
 }
+
+/* ERROR */
+div#error {
+	margin:128px auto;
+	max-width:640px;
+	color:#ccc;
+}
+div#error h1 {
+	margin-left:8px;
+	font-size:14px;
+	font-weight:700;
+}
+div#error pre {
+	margin:8px;
+	padding:8px;
+	overflow:scroll;
+	font-family:"Ubuntu", sans-serif;
+	background-color:#222;
+	border:1px solid;
+	border-radius:8px;
+}

@@ -1,6 +1,7 @@
 extends error-layout
 
 block content
-  div#error
-    h1 404 - #{message}
+  div#dev
+    h1 #{error.status} - #{message}
+    pre #{error.stack}
     a(href='/') Back to index page

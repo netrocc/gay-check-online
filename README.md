@@ -24,7 +24,7 @@ GAY CHECK ONLINE uses a number of open source projects to work properly:
 * [Express] - Fast, unopinionated, minimalist web framework for Node.js
 
 ### Installation
-GAY CHECK ONLINE requires [Node.js] v4+ to run.
+GAY CHECK ONLINE requires [Node.js] v6+ to run.
 
 ```sh
 $ git clone https://github.com/netrocc/gay-check-online.git

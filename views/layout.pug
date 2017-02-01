@@ -3,18 +3,18 @@ html
   head
     title= title
 
-    meta(name='description', content='#{description}')
-    meta(name='keywords', content='#{keywords}')
+    meta(name='description', content=description)
+    meta(name='keywords', content=keywords)
     meta(name='author', content='NETRO')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no')
     
-    meta(property='og:title', content='#{title}')
+    meta(property='og:title', content=title)
     meta(property='og:type', content='website')
-    meta(property='og:description', content='#{description}')
-    meta(property='og:image', content='https://#{requrl}/images/#{ogimageurl}')
-    meta(property='og:image:secure_url', content='https://#{requrl}/images/#{ogimageurl}')
-    meta(property='og:url', content='https://#{requrl}/')
-    meta(property='og:site_name', content='#{title}')
+    meta(property='og:description', content=description)
+    meta(property='og:image', content='https://' + requrl + '/images/' + ogimageurl)
+    meta(property='og:image:secure_url', content='https://' + requrl + '/images/' + ogimageurl)
+    meta(property='og:url', content='https://' + requrl + '/')
+    meta(property='og:site_name', content=title)
     
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Ubuntu:400,700', type='text/css')
     link(rel='stylesheet', href='/stylesheets/reset.css')

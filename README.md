@@ -14,9 +14,6 @@ Gay Online Check wants to show that the discussion about gay or not gay is total
 
 ----
 
-### Version
-1.0.1
-
 ### Tech
 GAY CHECK ONLINE uses a number of open source projects to work properly:
 
